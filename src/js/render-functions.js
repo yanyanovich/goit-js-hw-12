@@ -1,8 +1,8 @@
 import SimpleLightbox from 'simplelightbox';
 import iziToast from 'izitoast';
-export function createMarkup(images) {
+export function createMarkup(images, isNewSearch = true) {
   const galleryElement = document.querySelector('.gallery');
-  galleryElement.innerHTML = '';
+  if (isNewSearch) galleryElement.innerHTML = '';
 
   if (images.length === 0) {
     iziToast.error({
@@ -30,11 +30,25 @@ export function createMarkup(images) {
     )
     .join('');
 
-  galleryElement.innerHTML = markup;
+  galleryElement.insertAdjacentHTML('beforeend', markup);
   const lightbox = new SimpleLightbox('.gallery a', {
     captionsData: 'alt',
   });
   lightbox.refresh();
+
+  if (!isNewSearch) {
+    smoothScroll();
+  }
+}
+
+function smoothScroll() {
+  const { height: cardHeight } = document
+    .querySelector('.gallery-item')
+    .getBoundingClientRect();
+  window.scrollBy({
+    top: cardHeight * 2,
+    behavior: 'smooth',
+  });
 }
 
 export function showLoader() {
@@ -45,4 +59,18 @@ export function showLoader() {
 export function hideLoader() {
   const loader = document.querySelector('.loader');
   loader.classList.remove('visible');
+}
+
+export function clearSearchInput() {
+  const input = document.querySelector('#search-input');
+  input.value = '';
+}
+
+export function toggleLoadMoreBtn(shouldShow) {
+  const loadMoreBtn = document.querySelector('#load-more-btn');
+  if (shouldShow) {
+    loadMoreBtn.classList.remove('hidden');
+  } else {
+    loadMoreBtn.classList.add('hidden');
+  }
 }

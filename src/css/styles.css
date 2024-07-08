@@ -29,6 +29,12 @@ body {
   margin-left: auto;
   margin-right: auto;
 }
+#load-more-btn {
+  margin-top: 20px;
+}
+.hidden {
+  display: none;
+}
 .form--wrapper {
   display: flex;
   justify-content: center;
