@@ -7,7 +7,8 @@
 @import url('./reset.css');
 @import url('./vite-promo.css');
 @import url('./header.css');
-
+@import url('izitoast/dist/css/iziToast.min.css');
+@import url('simplelightbox/dist/simple-lightbox.min.css');
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;
@@ -22,4 +23,110 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+}
+body {
+  max-width: 1124px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.form--wrapper {
+  display: flex;
+  justify-content: center;
+}
+input {
+  height: 40px;
+  padding: 0px 16px;
+}
+.gallery {
+  width: 100%;
+  margin-top: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -24px;
+  gap: 24px 0;
+}
+.gallery-item {
+  flex-basis: calc(100% / 3 - 24px);
+  margin-left: 24px;
+}
+.gallery-item a {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #808080;
+  margin: 0;
+  gap: 10px;
+}
+.gallery-item img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+}
+.info {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  justify-content: center;
+}
+.info-item {
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+  line-height: 24px;
+  color: #2e2f42;
+}
+.info-item b {
+  font-size: 12px;
+  line-height: 16px;
+}
+.loader--wrapper {
+  display: flex;
+  justify-content: center;
+}
+.loader.visible {
+  opacity: 1;
+}
+.loader {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  position: relative;
+  animation: rotate 1s linear infinite;
+  opacity: 0;
+}
+.loader::before,
+.loader::after {
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+  inset: 0px;
+  border-radius: 50%;
+  border: 5px solid #fff;
+  animation: prixClipFix 2s linear infinite;
+}
+.loader::after {
+  inset: 8px;
+  transform: rotate3d(90, 90, 0, 180deg);
+  border-color: #ff3d00;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes prixClipFix {
+  0% {
+    clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0);
+  }
+  50% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 0, 100% 0, 100% 0);
+  }
+  75%,
+  100% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%);
+  }
 }
