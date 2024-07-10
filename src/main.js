@@ -45,15 +45,28 @@ async function onsubmit(event) {
       currentPage,
       perPage
     );
+
+    if (hits.length === 0) {
+      iziToast.error({
+        title: 'Error',
+        message:
+          'Sorry, there are no images matching your search query. Please try again!',
+      });
+      toggleLoadMoreBtn(false);
+      return;
+    }
+
     createMarkup(hits, true);
-    toggleLoadMoreBtn(hits.length >= perPage);
     clearSearchInput();
-    if (totalHits <= perPage) {
+
+    if (hits.length < perPage || currentPage * perPage >= totalHits) {
       toggleLoadMoreBtn(false);
       iziToast.info({
         title: 'Info',
         message: "We're sorry, but you've reached the end of search results.",
       });
+    } else {
+      toggleLoadMoreBtn(true);
     }
   } catch (error) {
     iziToast.error({
