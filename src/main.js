@@ -11,6 +11,8 @@ import {
 
 let currentPage = 1;
 let currentQuery = '';
+const perPage = 15;
+
 const formEl = {
   form: document.querySelector('.form'),
   input: document.querySelector('.search-input'),
@@ -38,10 +40,21 @@ async function onsubmit(event) {
   toggleLoadMoreBtn(false);
 
   try {
-    const images = await fetchImages(currentQuery, currentPage);
-    createMarkup(images, true);
-    toggleLoadMoreBtn(images.length > 0);
+    const { hits, totalHits } = await fetchImages(
+      currentQuery,
+      currentPage,
+      perPage
+    );
+    createMarkup(hits, true);
+    toggleLoadMoreBtn(hits.length >= perPage);
     clearSearchInput();
+    if (totalHits <= perPage) {
+      toggleLoadMoreBtn(false);
+      iziToast.info({
+        title: 'Info',
+        message: "We're sorry, but you've reached the end of search results.",
+      });
+    }
   } catch (error) {
     iziToast.error({
       title: 'Error',
@@ -57,9 +70,15 @@ async function loadMoreImages() {
   showLoader();
 
   try {
-    const images = await fetchImages(currentQuery, currentPage);
-    createMarkup(images, false);
-    if (images.length === 0) {
+    const { hits, totalHits } = await fetchImages(
+      currentQuery,
+      currentPage,
+      perPage
+    );
+    createMarkup(hits, false);
+    const loadedImages = currentPage * perPage;
+    toggleLoadMoreBtn(loadedImages < totalHits);
+    if (loadedImages >= totalHits) {
       toggleLoadMoreBtn(false);
       iziToast.info({
         title: 'Info',
